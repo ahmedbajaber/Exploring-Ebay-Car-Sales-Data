@@ -4,19 +4,15 @@
 
 # In[39]:
 
-
 import pandas as pd
 import numpy as np
 
 autos = pd.read_csv('autos.csv', encoding = 'Latin-1')
 
-
 # In[40]:
-
 
 autos.head
 autos.info()
-
 
 #   Observations:
 # 
@@ -36,7 +32,6 @@ autos.columns = ['date_crawled', 'name', 'seller', 'offer_type', 'price', 'ab_te
        'unrepaired_damage', 'ad_created', 'num_photos', 'postal_code',
        'last_seen']
 autos.columns
-
 
 #  Current Edits
 # 
@@ -58,7 +53,6 @@ print(autos['price'].unique())
 
 # In[45]:
 
-
 autos["price"] = (autos["price"]
                           .str.replace("$","")
                           .str.replace(",","")
@@ -67,12 +61,9 @@ autos["price"] = (autos["price"]
 
 # In[46]:
 
-
 autos = autos.drop(['seller','offer_type','num_photos'], axis = 1)
 
-
 # In[47]:
-
 
 autos["odometer"] = (autos["odometer"]
                              .str.replace("km","")
@@ -84,23 +75,17 @@ autos["odometer"] = (autos["odometer"]
 
 autos = autos.rename({'odometer':'odometer_km'}, axis = 1)
 
-
 # In[51]:
 
 autos['odometer_km'].value_counts()
 
-
 # In[52]:
-
 
 autos['price'].describe()
 
-
 # In[53]:
 
-
 autos['price'].value_counts().head()
-
 
 #  Obervations
 # 
@@ -109,9 +94,7 @@ autos['price'].value_counts().head()
 
 # In[54]:
 
-
 autos["price"].value_counts().sort_index(ascending=True).head(15)
-
 
 # Observations
 # 
@@ -124,10 +107,8 @@ autos["price"].value_counts().sort_index(ascending=True).head(15)
 
 # In[55]:
 
-
 autos[autos['price'].between(1,350000)]
 autos.head(20)
-
 
 # In[56]:
 
@@ -138,7 +119,6 @@ autos['registration_year'].describe()
 autos = autos[autos["registration_year"].between(1900,2016)]
 autos["registration_year"].value_counts(normalize=True).head(10)
 
-
 #   Observations
 # 
 # - Latest car registration date was 9999
@@ -148,7 +128,6 @@ autos["registration_year"].value_counts(normalize=True).head(10)
 
 # In[58]:
 
-
 brand_counts = autos['brand'].value_counts(normalize = True)
 print(brand_counts)
 
@@ -156,7 +135,6 @@ print(brand_counts)
 
 common_brands = brand_counts[brand_counts > 0.05].index
 print(common_brands)
-
 
 # In[60]:
 
@@ -177,14 +155,12 @@ for brand in common_brands:
 
 print(brand_highest_prices)
 
-
 # Normalized data to pick the most common brands that are listed on Ebay.
 # Then, created a dictionary that shows the highest price 
 # listed for each common brand.
 # 
 
 # In[61]:
-
 
 brand_mean_prices = {}
 
@@ -197,9 +173,7 @@ for brand in common_brands:
 
 print(brand_mean_prices)
 
-
 # In[62]:
-
 
 brand_mean_mileage = {}
 
@@ -211,28 +185,21 @@ for brand in common_brands:
     
 print(brand_mean_mileage)
 
-
 # In[73]:
-
 
 bmm = pd.Series(brand_mean_mileage)
 bmp = pd.Series(brand_mean_prices)
 print(bmp)
 
-
 # In[69]:
-
 
 brand_mean = pd.DataFrame(bmm, columns = ['mean_mileage'])
 brand_mean
 
-
 # In[81]:
-
 
 brand_mean['mean_price'] = bmp
 brand_mean.drop(['bmp'], axis = 1)
-
 
 # Created DF 'brand_mean' to compare the 2 columns together.
 # 
